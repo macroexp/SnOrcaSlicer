@@ -692,7 +692,10 @@ Preset* resolve_filament_preset(PresetBundle* preset_bundle,
     };
 
     for (auto& preset : preset_bundle->filaments) {
-        if (!preset.is_compatible || !preset.is_system)
+        // Match against user presets too, not just Snapmaker's shipped
+        // (system) ones, so custom filaments with a matching vendor/type/
+        // subtype name are recognized instead of falling back to Generic.
+        if (!preset.is_compatible)
             continue;
 
         std::string base = extract_base_filament_name(preset.name);
